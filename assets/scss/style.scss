@@ -229,3 +229,12 @@ code {
     }
   }
 }
+
+// tg styles
+li span.see-more a{
+  text-decoration: none;
+  background-image: none;
+}
+li .see-more a:hover{
+  border-bottom: 1px solid $color-accent-3;
+}
