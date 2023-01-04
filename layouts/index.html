@@ -4,7 +4,7 @@
     {{ .Site.Params.description | $.Page.RenderString }}
   {{ end }}
   {{ if isset .Site.Params "social" }}
-      <p>Find me on
+      <p>You can find me on
       {{ $length := (len .Site.Params.social) }}
       {{ range $index, $elem := .Site.Params.social}}
       {{ if eq $elem.name "email" }}
@@ -34,56 +34,52 @@
       {{ end }}
       </p>
   {{ end }}
-  {{ partial "optional-about.html" . }}
+
   </section>
 
-  <section id="writing">
-    <span class="h1"><a href="{{ .Site.Params.mainSection | absURL }}">{{ .Site.Params.mainSectionTitle | default "Writings" }}</a></span>
-    {{ if (and (and (isset .Site.Params "tagsoverview") (eq .Site.Params.tagsOverview true)) (gt (len .Site.Taxonomies.tags) 0)) }}
-    <span class="h2">Topics</span>
-    <span class="widget tagcloud">
-      {{ $AllRegularPagesCount := len .Site.RegularPages }}
-      {{ range $elem := .Site.Taxonomies.tags.Alphabetical }}
-      <a style="font-size: {{ (add 0.5 (mul 5 (div (float $elem.Count) $AllRegularPagesCount))) }}rem;" href="{{ $elem.Page.Permalink }}">
-        {{- .Page.Title -}}
-      </a>
-      {{ end }}
-    </span>
-    <span class="h2">Most recent</span>
-    {{ end }}
-
-    {{ $showAllPostsOnHomePage := false }}
-    {{ if (isset .Site.Params "showallpostsonhomepage") }}
-      {{ $showAllPostsOnHomePage = .Site.Params.ShowAllPostsOnHomePage }}
-    {{ end }}
+  <section id="writing" >
     {{ $dataFormat := .Site.Params.dateFormat | default "2006-01-02" }}
-    {{ $mainPosts := (sort ( where site.RegularPages "Type" "in" site.Params.mainSections ) "Date" "desc") }}
-    {{ if $showAllPostsOnHomePage }}
-    <ul class="post-list">
-      {{ range (.Paginate $mainPosts).Pages }}
-        <li class="post-item">
-          <div class="meta"><time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time></div>
-          <span><a href="{{ .Permalink }}">{{ if .Title }} {{- .Title -}} {{ else }} {{- print "Untitled" -}}{{ end }}</a></span>
-        </li>
-      {{ end }}
-    </ul>
 
-    {{ partial "pagination.html" . }}
-
-    {{ else }}
+    {{ $reviewPosts := (sort ( where site.RegularPages "Section" "in" "reviews" ) "Date" "desc") }}
+    <span class="h1"><a href="reviews">Movie and Book Reviews</a></span>
     <ul class="post-list">
       {{ .Scratch.Set "count" 5 }}
       {{ if isset .Site.Params "postsonhomepage" }}
         {{ .Scratch.Set "count" .Site.Params.postsOnHomePage }}
       {{ end }}
-      {{ range (first (.Scratch.Get "count") $mainPosts) }}
+      {{ range (first (.Scratch.Get "count") $reviewPosts) }}
         <li class="post-item">
           <div class="meta"><time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time></div>
           <span><a href="{{ .Permalink }}">{{ if .Title }} {{- .Title -}} {{ else }} {{- print "Untitled" -}}{{ end }}</a></span>
         </li>
       {{ end }}
+      {{ if gt (len $reviewPosts) 4 }}
+        <li class="post-item">
+          <span class="see-more"><a href="reviews">More...</a></span>
+        </li>
+      {{ end }}
     </ul>
-    {{ end }}
+
+    {{ $fictionPosts := (sort ( where site.RegularPages "Section" "in" "fiction" ) "Date" "desc") }}
+    <span class="h1"><a href="fiction">Fiction & Writing</a></span>
+    <ul class="post-list">
+      {{ .Scratch.Set "count" 5 }}
+      {{ if isset .Site.Params "postsonhomepage" }}
+        {{ .Scratch.Set "count" .Site.Params.postsOnHomePage }}
+      {{ end }}
+      {{ range (first (.Scratch.Get "count") $fictionPosts) }}
+        <li class="post-item">
+          <div class="meta"><time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time></div>
+          <span><a href="{{ .Permalink }}">{{ if .Title }} {{- .Title -}} {{ else }} {{- print "Untitled" -}}{{ end }}</a></span>
+        </li>
+      {{ end }}
+      {{ if gt (len $fictionPosts) 4 }}
+        <li class="post-item">
+          <span class="see-more"><a href="reviews">More...</a></span>
+        </li>
+      {{ end }}
+    </ul>
+
   </section>
 
   {{ $showProjectsList := false }}
