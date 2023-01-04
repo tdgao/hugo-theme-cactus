@@ -309,9 +309,15 @@
 .pl4 {
   padding-left: 4rem;
 }
-.py4 {
+.page-padding {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+@media (max-width: 39rem) {
+  .page-padding {
+    padding-top: 2rem;
+    padding-bottom: 0;
+  }
 }
 .px4 {
   padding-right: 4rem;
