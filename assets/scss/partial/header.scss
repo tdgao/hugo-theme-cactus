@@ -88,14 +88,14 @@
   }
 }
 @media screen and (max-width: 410px) {
-  #header #title {
-    h1 {
-      vertical-align: middle;
-    }
-  }
   #header {
     display: grid;
     row-gap: 10px;
+    
+    .title-container{
+      display: flex;
+      align-items: center;
+    }
     ul {
       display: flex;
       flex-wrap: wrap;
