@@ -236,5 +236,7 @@ li span.see-more a{
   background-image: none;
 }
 li .see-more a:hover{
+  text-decoration: none;
+  background-image: none;
   border-bottom: 1px solid $color-accent-3;
 }
