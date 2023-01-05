@@ -40,42 +40,44 @@
   <section id="writing" >
     {{ $dataFormat := .Site.Params.dateFormat | default "2006-01-02" }}
 
-    {{ $reviewPosts := (sort ( where site.RegularPages "Section" "in" "reviews" ) "Date" "desc") }}
-    <span class="h1"><a href="reviews">Movie and Book Reviews</a></span>
+    {{ $sectionDir := "reviews"}}
+    {{ $sectionPosts := (sort ( where site.RegularPages "Section" "in" $sectionDir ) "Date" "desc") }}
+    <span class="h1"><a href={{$sectionDir}}>Movie and Book Reviews</a></span>
     <ul class="post-list">
       {{ .Scratch.Set "count" 5 }}
       {{ if isset .Site.Params "postsonhomepage" }}
         {{ .Scratch.Set "count" .Site.Params.postsOnHomePage }}
       {{ end }}
-      {{ range (first (.Scratch.Get "count") $reviewPosts) }}
+      {{ range (first (.Scratch.Get "count") $sectionPosts) }}
         <li class="post-item">
           <div class="meta"><time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time></div>
           <span><a href="{{ .Permalink }}">{{ if .Title }} {{- .Title -}} {{ else }} {{- print "Untitled" -}}{{ end }}</a></span>
         </li>
       {{ end }}
-      {{ if gt (len $reviewPosts) 4 }}
+      {{ if gt (len $sectionPosts) 4 }}
         <li class="post-item">
-          <span class="see-more"><a href="reviews">More...</a></span>
+          <span class="see-more"><a href={{$sectionDir}}>More...</a></span>
         </li>
       {{ end }}
     </ul>
 
-    {{ $fictionPosts := (sort ( where site.RegularPages "Section" "in" "fiction" ) "Date" "desc") }}
-    <span class="h1"><a href="fiction">Fiction & Writing</a></span>
+    {{ $sectionDir := "fiction"}}
+    {{ $sectionPosts := (sort ( where site.RegularPages "Section" "in" $sectionDir ) "Date" "desc") }}
+    <span class="h1"><a href={{$sectionDir}}>Fiction & Writing</a></span>
     <ul class="post-list">
       {{ .Scratch.Set "count" 5 }}
       {{ if isset .Site.Params "postsonhomepage" }}
         {{ .Scratch.Set "count" .Site.Params.postsOnHomePage }}
       {{ end }}
-      {{ range (first (.Scratch.Get "count") $fictionPosts) }}
+      {{ range (first (.Scratch.Get "count") $sectionPosts) }}
         <li class="post-item">
           <div class="meta"><time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time></div>
           <span><a href="{{ .Permalink }}">{{ if .Title }} {{- .Title -}} {{ else }} {{- print "Untitled" -}}{{ end }}</a></span>
         </li>
       {{ end }}
-      {{ if gt (len $fictionPosts) 4 }}
+      {{ if gt (len $sectionPosts) 4 }}
         <li class="post-item">
-          <span class="see-more"><a href="reviews">More...</a></span>
+          <span class="see-more"><a href={{$sectionDir}}>More...</a></span>
         </li>
       {{ end }}
     </ul>
